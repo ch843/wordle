@@ -115,6 +115,7 @@ class WordleGWindow:
                 for fn in self._enter_listeners:
                     fn(s)
 
+                # move to next row
                 current_row = self._row
                 self.set_current_row(current_row + 1)
                
@@ -124,6 +125,8 @@ class WordleGWindow:
                     sq = self._grid[self._row][self._col]
                     sq.set_letter(ch)
                     self._col += 1
+
+            #in the future-> this is where we will make sure TAB and DELETE
 
         def press_action(tke):
             self._down_x = tke.x

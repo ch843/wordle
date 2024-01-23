@@ -13,7 +13,9 @@ def wordle():
 
     def enter_action(s):
         # s is the variable passed in that the user typed in
+
         if s.lower() in FIVE_LETTER_WORDS:
+             # here is where the color logic will go
             gw.show_message("Great job picking a valid word!")
         else:
             gw.show_message("Not in word list")
@@ -23,8 +25,7 @@ def wordle():
     
     gw = WordleGWindow()
 
-    for i in range (N_ROWS - 1):
-        gw.add_enter_listener(enter_action)
+    gw.add_enter_listener(enter_action)
 
     gw.show_message("Enter a word")
     gw.set_current_row(0)
