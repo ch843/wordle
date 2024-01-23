@@ -22,10 +22,12 @@ def wordle():
     random_word = random.choice(FIVE_LETTER_WORDS).upper()
     
     gw = WordleGWindow()
-    current_row = gw.get_current_row()
-    print(current_row)
-    
-    gw.add_enter_listener(enter_action)
+
+    for i in range (N_ROWS - 1):
+        gw.add_enter_listener(enter_action)
+
+    gw.show_message("Enter a word")
+    gw.set_current_row(0)
 
 if __name__ == "__main__":
     wordle()

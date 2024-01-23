@@ -110,9 +110,10 @@ class WordleGWindow:
                 self.show_message("")
                 s = ""
                 for col in range(N_COLS):
-                    s += self._grid[self._row][col].get_letter();
+                    s += self._grid[self._row][col].get_letter()
                 for fn in self._enter_listeners:
                     fn(s)
+                self.set_current_row(self._row + 1)
             elif ch.isalpha():
                 self.show_message("")
                 if self._row < N_ROWS and self._col < N_COLS:
