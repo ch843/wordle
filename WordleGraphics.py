@@ -112,9 +112,7 @@ class WordleGWindow:
                 for col in range(N_COLS):
                     s += self._grid[self._row][col].get_letter()
                 
-                print("enter listeners []:", self._enter_listeners)
                 for fn in self._enter_listeners:
-                    print(fn)
                     fn(s)
 
                 current_row = self._row
