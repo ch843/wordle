@@ -115,10 +115,11 @@ class WordleGWindow:
                 for fn in self._enter_listeners:
                     fn(s)
 
-                # move to next row
-                current_row = self._row
-                self.set_current_row(current_row + 1)
-            
+                # move to next row if not at last row
+                if (self._row < (N_ROWS - 1)):
+                    current_row = self._row
+                    self.set_current_row(current_row + 1)
+                
             elif ch.isalpha():
                 self.show_message("")
                 if self._row < N_ROWS and self._col < N_COLS:
