@@ -15,7 +15,7 @@ def wordle():
         # s is the variable passed in that the user typed in
 
         if s.lower() in FIVE_LETTER_WORDS:
-             # here is where the color logic will go
+            # here is where the color logic will go
             gw.show_message("Great job picking a valid word!")
         else:
             gw.show_message("Not in word list")

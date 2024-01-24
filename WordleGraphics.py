@@ -92,8 +92,8 @@ class WordleGWindow:
 
         def create_message():
             return WordleMessage(self._canvas,
-                                 CANVAS_WIDTH / 2,
-                                 MESSAGE_Y)
+                                CANVAS_WIDTH / 2,
+                                MESSAGE_Y)
 
         def key_action(tke):
             if isinstance(tke, str):
@@ -118,7 +118,7 @@ class WordleGWindow:
                 # move to next row
                 current_row = self._row
                 self.set_current_row(current_row + 1)
-               
+            
             elif ch.isalpha():
                 self.show_message("")
                 if self._row < N_ROWS and self._col < N_COLS:
@@ -171,7 +171,7 @@ class WordleGWindow:
         self._grid = create_grid()
         self._message = create_message()
         self._keys = create_keyboard()
-        self._enter_listeners = [ ]
+        self._enter_listeners = []
         root.bind("<Key>", key_action)
         root.bind("<ButtonPress-1>", press_action)
         root.bind("<ButtonRelease-1>", release_action)
