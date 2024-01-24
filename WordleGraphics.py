@@ -9,6 +9,7 @@ import atexit
 import math
 import time
 import tkinter
+import tkinter.ttk as ttk
 
 # Constants
 
@@ -127,8 +128,6 @@ class WordleGWindow:
                     sq.set_letter(ch)
                     self._col += 1
 
-            #in the future-> this is where we will make sure TAB and DELETE
-
         def press_action(tke):
             self._down_x = tke.x
             self._down_y = tke.y
@@ -178,7 +177,20 @@ class WordleGWindow:
         root.bind("<ButtonRelease-1>", release_action)
         self._row = 0
         self._col = 0
+
+        # Add a Combobox for language selection
+        self.language_var = tkinter.StringVar()
+        self.language_var.set("English")  # Default language
+        self.language_combobox = ttk.Combobox(root, textvariable=self.language_var, values=["English", "Espanol"])
+        self.language_combobox.pack()
+        self.language_combobox.bind("<<ComboboxSelected>>", self.get_language)
+
         atexit.register(start_event_loop)
+
+    def get_language(self):
+        selected_language = self.language_var.get()
+        return selected_language
+        # show key board for spanish or english here
 
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()

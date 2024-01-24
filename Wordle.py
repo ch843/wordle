@@ -6,24 +6,29 @@ This application is called Wordle. It takes user input of a word, checks it agai
 
 import random
 
-from WordleDictionary import FIVE_LETTER_WORDS
+from WordleDictionary import EN_WORDS, ES_WORDS
 from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
 
 def wordle():
-
     def enter_action(s):
         # s is the variable passed in that the user typed in
 
-        if s.lower() in FIVE_LETTER_WORDS:
+        if s == random_word:
+            gw.show_message("You guessed correct, great job!")
+        elif s.lower() in EN_WORDS or s.lower() in ES_WORDS:
             # here is where the color logic will go
-            gw.show_message("Great job picking a valid word!")
+            gw.show_message("Valid word")
         else:
-            gw.show_message("Not in word list")
-
-    #choose random word
-    random_word = random.choice(FIVE_LETTER_WORDS).upper()
+            gw.show_message("Not the right guess")
     
     gw = WordleGWindow()
+    language = gw.get_language()
+    random_word = ''
+     #choose random word
+    if language == "English":
+        random_word = random.choice(EN_WORDS).upper()
+    elif language == "Espanol":
+        random_word = random.choice(EN_WORDS).upper()
 
     gw.add_enter_listener(enter_action)
 
