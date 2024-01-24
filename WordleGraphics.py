@@ -92,8 +92,8 @@ class WordleGWindow:
 
         def create_message():
             return WordleMessage(self._canvas,
-                                 CANVAS_WIDTH / 2,
-                                 MESSAGE_Y)
+                                CANVAS_WIDTH / 2,
+                                MESSAGE_Y)
 
         def key_action(tke):
             if isinstance(tke, str):
@@ -110,15 +110,24 @@ class WordleGWindow:
                 self.show_message("")
                 s = ""
                 for col in range(N_COLS):
-                    s += self._grid[self._row][col].get_letter();
+                    s += self._grid[self._row][col].get_letter()
+                
                 for fn in self._enter_listeners:
                     fn(s)
+
+                # move to next row if not at last row
+                if (self._row < (N_ROWS - 1)):
+                    current_row = self._row
+                    self.set_current_row(current_row + 1)
+                
             elif ch.isalpha():
                 self.show_message("")
                 if self._row < N_ROWS and self._col < N_COLS:
                     sq = self._grid[self._row][self._col]
                     sq.set_letter(ch)
                     self._col += 1
+
+            #in the future-> this is where we will make sure TAB and DELETE
 
         def press_action(tke):
             self._down_x = tke.x
@@ -163,7 +172,7 @@ class WordleGWindow:
         self._grid = create_grid()
         self._message = create_message()
         self._keys = create_keyboard()
-        self._enter_listeners = [ ]
+        self._enter_listeners = []
         root.bind("<Key>", key_action)
         root.bind("<ButtonPress-1>", press_action)
         root.bind("<ButtonRelease-1>", release_action)
