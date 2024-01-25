@@ -7,16 +7,26 @@ This application is called Wordle. It takes user input of a word, checks it agai
 import random
 
 from WordleDictionary import FIVE_LETTER_WORDS
-from WordleGraphics import WordleGWindow, N_COLS, N_ROWS
+from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR, UNKNOWN_COLOR
 
 def wordle():
-
     def enter_action(s):
         # s is the variable passed in that the user typed in
-
         if s.lower() in FIVE_LETTER_WORDS:
             # here is where the color logic will go
-            gw.show_message("Great job picking a valid word!")
+            row = gw.get_current_row()
+            matched_indices = set()
+            correct_indices = set()
+
+            for i in range(len(s)):
+                if s[i] == random_word[i] and i not in correct_indices:
+                    gw.set_square_color(row, i, CORRECT_COLOR)
+                    correct_indices.add(i)
+                elif s[i] in random_word and i not in matched_indices:
+                    gw.set_square_color(row, i, PRESENT_COLOR)
+                    matched_indices.add(i)
+                elif i not in correct_indices and i not in matched_indices:
+                    gw.set_square_color(row, i, MISSING_COLOR)
         else:
             gw.show_message("Not in word list")
 
