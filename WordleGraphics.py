@@ -9,7 +9,7 @@ import atexit
 import math
 import time
 import tkinter
-
+from WordleDictionary import FIVE_LETTER_WORDS
 # Constants
 
 N_ROWS = 6			# Number of rows
@@ -115,10 +115,14 @@ class WordleGWindow:
                 for fn in self._enter_listeners:
                     fn(s)
 
-                # move to next row if not at last row
-                if (self._row < (N_ROWS - 1)):
-                    current_row = self._row
-                    self.set_current_row(current_row + 1)
+                # move to next row if not at last row (Unless the word guessed doesn't exist)
+                if s.lower() in FIVE_LETTER_WORDS:    
+                    if (self._row < (N_ROWS - 1)):
+                        current_row = self._row
+                        self.set_current_row(current_row + 1)
+                else:
+                    self.show_message("Not in word list")
+
                 
             elif ch.isalpha():
                 self.show_message("")

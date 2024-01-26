@@ -22,7 +22,7 @@ def wordle():
                 if s[i] == random_word[i] and i not in correct_indices:
                     gw.set_square_color(row, i, CORRECT_COLOR)
                     correct_indices.add(i)
-                elif s[i] in random_word and i not in matched_indices:
+                elif s[i] in random_word and i not in matched_indices and i not in correct_indices:
                     gw.set_square_color(row, i, PRESENT_COLOR)
                     matched_indices.add(i)
                 elif i not in correct_indices and i not in matched_indices:
