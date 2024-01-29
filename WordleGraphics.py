@@ -100,7 +100,9 @@ class WordleGWindow:
                 ch = tke.upper()
             else:
                 ch = tke.char.upper()
-            if ch == "\007" or ch == "\177" or ch == "DELETE":
+
+            if ch == "\007" or ch == "\177" or ch == "\x08" or ch == "DELETE":
+                print("entered delete func")
                 self.show_message("")
                 if self._row < N_ROWS and self._col > 0:
                     self._col -= 1
