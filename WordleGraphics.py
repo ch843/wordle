@@ -15,8 +15,6 @@ from WordleDictionary import FIVE_LETTER_WORDS
 N_ROWS = 6			# Number of rows
 N_COLS = 5			# Number of columns
 
-CORRECT_COLOR = "#4f82f0"       # Light green for correct letters
-PRESENT_COLOR = "#fcbd5d"       # orange for misplaced letters
 MISSING_COLOR = "#999999"       # Gray for letters that don't appear
 UNKNOWN_COLOR = "#FFFFFF"       # Undetermined letters are white
 KEY_COLOR = "#DDDDDD"           # Keys are colored light gray
@@ -184,6 +182,16 @@ class WordleGWindow:
         self._col = 0
         atexit.register(start_event_loop)
 
+        # Create a dropdown menu
+        self.dropdown_var = tk.StringVar()
+        self.dropdown_var.set("Normal Mode")
+        self.dropdown = tk.OptionMenu(root, self.dropdown_var, "Normal Mode", "Colorblind Mode")
+        self.dropdown.pack(pady=10)
+
+        # Button to apply selected mode
+        self.apply_button = tk.Button(root, text="Apply", command=self.apply_mode)
+        self.apply_button.pack(pady=5)
+        
     def get_square_letter(self, row, col):
         return self._grid[row][col].get_letter()
 
@@ -237,6 +245,18 @@ class WordleGWindow:
             title = f"You guessed it in {num_guesses} tries."
             message = stats[num_guesses]
             CustomPopup(self._root, title, message)
+
+    # applies 
+    def apply_mode(self):
+        selected_mode = self.dropdown_var.get()
+        if selected_mode == "Colorblind Mode":
+            CORRECT_COLOR = "#4f82f0"
+            PRESENT_COLOR = "#fcbd5d" 
+            return CORRECT_COLOR, PRESENT_COLOR
+        elif selected_mode == "Normal Mode":
+            CORRECT_COLOR = "#66BB66"
+            PRESENT_COLOR = "#CCBB66"
+            return CORRECT_COLOR, PRESENT_COLOR
 
 class CustomPopup(tk.Toplevel):
     def __init__(self, parent, title, message):

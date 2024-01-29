@@ -7,7 +7,7 @@ This application is called Wordle. It takes user input of a word, checks it agai
 import random
 
 from WordleDictionary import FIVE_LETTER_WORDS
-from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT_COLOR, MISSING_COLOR, UNKNOWN_COLOR
+from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, MISSING_COLOR, UNKNOWN_COLOR
 
 def wordle():
     def enter_action(s):
@@ -16,6 +16,8 @@ def wordle():
             row = gw.get_current_row()
             matched_indices = set()
             correct_indices = set()
+
+            CORRECT_COLOR, PRESENT_COLOR = gw.apply_mode()
 
             for i in range(len(s)):
                 if s[i] == random_word[i] and i not in correct_indices:
