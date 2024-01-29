@@ -6,9 +6,9 @@ graphical display for the Wordle project.
 """
 
 import atexit
-import math
 import time
-import tkinter
+import tkinter as tk
+from WordleDictionary import FIVE_LETTER_WORDS
 
 # Constants
 
@@ -100,13 +100,16 @@ class WordleGWindow:
                 ch = tke.upper()
             else:
                 ch = tke.char.upper()
-            if ch == "\007" or ch == "\177" or ch == "DELETE":
+            
+            #if the user presses the DELETE button on the screen or keyboard
+            if ch in ["\007", "\177", "\x08", "\x7F", "DELETE"]:
                 self.show_message("")
                 if self._row < N_ROWS and self._col > 0:
                     self._col -= 1
                     sq = self._grid[self._row][self._col]
                     sq.set_letter(" ")
-            elif ch == "\r" or ch == "\n" or ch == "ENTER":
+            # if user presses ENTER or TAB keys
+            elif ch in ["\r", "\n", "\t", "ENTER"]:
                 self.show_message("")
                 s = ""
                 for col in range(N_COLS):
@@ -115,10 +118,13 @@ class WordleGWindow:
                 for fn in self._enter_listeners:
                     fn(s)
 
-                # move to next row if not at last row
-                if (self._row < (N_ROWS - 1)):
+                # move to next row if not at last row and word exists in dictionary
+                if (self._row < (N_ROWS - 1)) and (s.lower() in FIVE_LETTER_WORDS):
                     current_row = self._row
                     self.set_current_row(current_row + 1)
+                # show  that the user didn't guess it right
+                elif (self._row == (N_ROWS - 1)):
+                    self.show_stats()
                 
             elif ch.isalpha():
                 self.show_message("")
@@ -126,8 +132,6 @@ class WordleGWindow:
                     sq = self._grid[self._row][self._col]
                     sq.set_letter(ch)
                     self._col += 1
-
-            #in the future-> this is where we will make sure TAB and DELETE
 
         def press_action(tke):
             self._down_x = tke.x
@@ -158,11 +162,11 @@ class WordleGWindow:
             """Starts the tkinter event loop when the program exits."""
             root.mainloop()
 
-        root = tkinter.Tk()
+        root = tk.Tk()
         root.title("Wordle")
         root.protocol("WM_DELETE_WINDOW", delete_window)
         self._root = root
-        canvas = tkinter.Canvas(root,
+        canvas = tk.Canvas(root,
                                 bg="White",
                                 width=CANVAS_WIDTH,
                                 height=CANVAS_HEIGHT,
@@ -214,6 +218,46 @@ class WordleGWindow:
     def show_message(self, msg, color="Black"):
         self._message.set_text(msg, color)
 
+    def show_stats(self):
+        stats = {
+            1: "You are among the elite!\n0.02% of Wordle users get it on their first try." ,
+            2: "You are AWESOME!\n5.67% of Wordle users get it on their second guess.",
+            3: "You are really good!\n22.66% of Wordle users get it on their third guess.",
+            4: "You are good!\n33.10% of Wordle users get it on their fourth guess.",
+            5: "You are pretty average!\n23.91% of Wordle users get it on their fifth guess.",
+            6: "You barely squeaked by!\n11.72% of Wordle users get it on their sixth guess.",
+            "No": "Good try!\n2.92% of Wordle users guess don't guess it right."
+        }
+        num_guesses = self._row + 1
+        if num_guesses > 6:
+            title = "You didn't guess it"
+            message = stats['No']
+            CustomPopup(self._root, title, message)
+        else:
+            title = f"You guessed it in {num_guesses} tries."
+            message = stats[num_guesses]
+            CustomPopup(self._root, title, message)
+
+class CustomPopup(tk.Toplevel):
+    def __init__(self, parent, title, message):
+        super().__init__(parent)
+        self.parent = parent
+        self.title(title)
+        label = tk.Label(self, text=message)
+        label.pack(padx=20, pady=10)
+        share_button = tk.Button(self, text="Share", command=self.on_share_clicked)
+        share_button.pack(pady=5)
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
+
+    def on_share_clicked(self):
+        # The action when the "Share" button is clicked
+        # Right now, it just closes the window when share is clicked
+        # This would be built out more in teh future
+        self.parent.destroy()
+    
+    def on_close(self):
+        # Close the entire application when the dialog is closed, so they can't go back to the game
+        self.parent.destroy()
 
 class WordleSquare:
 
@@ -312,7 +356,7 @@ class WordleMessage:
         self._msg = canvas.create_text(x, y,
                                        text="",
                                        font=MESSAGE_FONT,
-                                       anchor=tkinter.CENTER)
+                                       anchor=tk.CENTER)
 
     def get_text(self):
         return self._text

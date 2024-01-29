@@ -11,9 +11,8 @@ from WordleGraphics import WordleGWindow, N_COLS, N_ROWS, CORRECT_COLOR, PRESENT
 
 def wordle():
     def enter_action(s):
-        # s is the variable passed in that the user typed in
+        # s is the word that the user typed in
         if s.lower() in FIVE_LETTER_WORDS:
-            # here is where the color logic will go
             row = gw.get_current_row()
             matched_indices = set()
             correct_indices = set()
@@ -27,11 +26,15 @@ def wordle():
                     matched_indices.add(i)
                 elif i not in correct_indices and i not in matched_indices:
                     gw.set_square_color(row, i, MISSING_COLOR)
+
+            if s == random_word:
+                gw.show_stats()
         else:
-            gw.show_message("Not in word list")
+            gw.show_message("Not a valid word. Try again!")
 
     #choose random word
     random_word = random.choice(FIVE_LETTER_WORDS).upper()
+    print(random_word)
     
     gw = WordleGWindow()
 
