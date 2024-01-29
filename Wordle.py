@@ -26,11 +26,15 @@ def wordle():
                     matched_indices.add(i)
                 elif i not in correct_indices and i not in matched_indices:
                     gw.set_square_color(row, i, MISSING_COLOR)
+
+            if s == random_word:
+                gw.show_stats()
         else:
-            gw.show_message("Not in word list")
+            gw.show_message("Not a valid word. Try again!")
 
     #choose random word
     random_word = random.choice(FIVE_LETTER_WORDS).upper()
+    print(random_word)
     
     gw = WordleGWindow()
 
