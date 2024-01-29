@@ -9,6 +9,7 @@ import atexit
 import math
 import time
 import tkinter
+from WordleDictionary import FIVE_LETTER_WORDS
 
 # Constants
 
@@ -101,13 +102,17 @@ class WordleGWindow:
             else:
                 ch = tke.char.upper()
 
+            print(tke)
+            
+            #if the user presses the DELETE button on the screen or keyboard
             if ch in ["\007", "\177", "\x08", "\x7F", "DELETE"]:
                 self.show_message("")
                 if self._row < N_ROWS and self._col > 0:
                     self._col -= 1
                     sq = self._grid[self._row][self._col]
                     sq.set_letter(" ")
-            elif ch == "\r" or ch == "\n" or ch == "ENTER":
+            # if user presses ENTER or TAB keys
+            elif ch in ["\r", "\n", "\t", "ENTER"]:
                 self.show_message("")
                 s = ""
                 for col in range(N_COLS):
@@ -116,8 +121,8 @@ class WordleGWindow:
                 for fn in self._enter_listeners:
                     fn(s)
 
-                # move to next row if not at last row
-                if (self._row < (N_ROWS - 1)):
+                # move to next row if not at last row adn word exists in dictionary
+                if (self._row < (N_ROWS - 1)) and (s.lower() in FIVE_LETTER_WORDS):
                     current_row = self._row
                     self.set_current_row(current_row + 1)
                 
@@ -127,8 +132,6 @@ class WordleGWindow:
                     sq = self._grid[self._row][self._col]
                     sq.set_letter(ch)
                     self._col += 1
-
-            #in the future-> this is where we will make sure TAB and DELETE
 
         def press_action(tke):
             self._down_x = tke.x
